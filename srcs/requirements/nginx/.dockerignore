@@ -1,0 +1,5 @@
+.git
+.env
+secrets/*.swp
+*.tmp
+.DS_Store
