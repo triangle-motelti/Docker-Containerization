@@ -2,9 +2,13 @@
 
 if [ ! -f "/var/www/html/wp-config.php" ]; then
 
+    DB_PASS=$(cat /run/secrets/db_password)
+
+    source /run/secrets/credentials
+
     wp core download --allow-root
 
-    wp config create --dbname="${db_name}" --dbuser="${db_user}" --dbpass="${db_user_pass}" --dbhost="mariadb" --allow-root
+    wp config create --dbname="${db_name}" --dbuser="${db_user}" --dbpass="${DB_PASS}" --dbhost="mariadb" --allow-root
 
     wp core install --url="${DOMAIN_NAME}" --title="Inception" --admin_user="${WP_ADMIN}" --admin_password="${WP_ADMIN_PASS}" --admin_email="${WP_ADMIN_EMAIL}" --allow-root
 
