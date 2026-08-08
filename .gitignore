@@ -1,2 +1,2 @@
-srcs/env
-srcs/.env.*
+srcs/.env
+secrets/
