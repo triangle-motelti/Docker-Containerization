@@ -149,3 +149,31 @@ More user-oriented instructions are available in `USER_DOC.md`. Development and 
 ### Use of AI
 
 AI was also used to understand concepts, review syntax, identify possible configuration mistakes, and help draft the project documentation.
+
+## Project description 
+
+### Virtual machines vs Docker
+
+A virtual machine emulates a complete computer and runs its own operating-system kernel. Docker containers share the host kernel while isolating processes, filesystems, networks, and resources.
+
+The project still runs inside a virtual machine because the subject requires it, while Docker divides the application into reproducible and isolated services inside that VM.
+
+### Secrets vs environment variables
+
+Environment variables are used for project-specific configuration required by Docker Compose.
+
+Passwords are stored in files under `secrets/` and mounted inside containers under `/run/secrets`. This prevents passwords from being written in Dockerfiles, directly inside `docker-compose.yml`, or committed to Git.
+
+The local `.env` file is also excluded from the repository. Its exact contents depend on the learner's environment and are intentionally not reproduced in this documentation.
+
+### Docker network vs host network
+
+The custom bridge network gives each service an internal DNS name. For example, NGINX reaches PHP-FPM through `wordpress:9000`, and WordPress reaches the database through `mariadb`.
+
+Host networking is not used. The containers remain isolated from the host network, and only NGINX publishes port `443`.
+
+### Docker volumes vs bind mounts
+
+The services use Docker named volumes instead of direct service-level bind-mount syntax. The local volume driver stores their data in the paths required by the subject under `/home/<login>/data`.
+
+The data survives container deletion and virtual-machine reboot because it is stored outside the containers' writable layers.
