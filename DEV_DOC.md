@@ -1,49 +1,5 @@
 # Inception Developer Documentation
 
-## Overview
-
-The project is managed by Docker Compose and contains three custom images:
-
-| Service | Main process | Internal port | Host port |
-|---|---|---:|---:|
-| `mariadb` | `mariadbd` | `3306` | none |
-| `wordpress` | `php-fpm8.2 -F` | `9000` | none |
-| `nginx` | `nginx -g 'daemon off;'` | `443` | `443` |
-
-The containers share the `inception` bridge network. Docker's internal DNS resolves service names such as `mariadb` and `wordpress`.
-
-> **Local-only files**
->
-> The repository intentionally excludes `srcs/.env` and the password files under `secrets/`.
-> These files must be created locally before building the stack.
-
-## Repository structure
-
-```text
-.
-├── Makefile
-├── README.md
-├── USER_DOC.md
-├── DEV_DOC.md
-├── secrets/
-│   └── .gitkeep
-└── srcs/
-    ├── docker-compose.yml
-    └── requirements/
-        ├── mariadb/
-        │   ├── Dockerfile
-        │   ├── conf/50-server.cnf
-        │   └── tools/init.sh
-        ├── nginx/
-        │   ├── Dockerfile
-        │   └── conf/default
-        └── wordpress/
-            ├── Dockerfile
-            └── tools/init.sh
-```
-
-At runtime, a local `srcs/.env` file must also exist. It is intentionally not committed.
-
 ## Prerequisites
 
 Install inside the virtual machine:
@@ -344,32 +300,3 @@ make re
 
 A port change may require updating both the service configuration and its corresponding Compose connection or port mapping. For example, changing PHP-FPM from port `9000` requires changing both the PHP-FPM `listen` value and NGINX `fastcgi_pass`.
 
-## Validation checklist
-
-Before submission, verify:
-
-```sh
-git status
-git check-ignore -v srcs/.env
-git check-ignore -v secrets/db_password.txt
-sh -n srcs/requirements/mariadb/tools/init.sh
-sh -n srcs/requirements/wordpress/tools/init.sh
-docker compose --env-file srcs/.env -f srcs/docker-compose.yml config
-docker compose --env-file srcs/.env -f srcs/docker-compose.yml ps
-docker network inspect inception
-docker volume inspect mariadb_data
-docker volume inspect wordpress_data
-```
-
-Also confirm:
-
-- only port `443` is published;
-- HTTP access fails;
-- HTTPS shows the configured WordPress site instead of the installation page;
-- both WordPress users exist;
-- the administrator username does not contain `admin`;
-- the normal user can log in and comment;
-- the administrator can edit a page;
-- data remains after stopping containers and rebooting the VM;
-- no secret file or `.env` file is committed to Git;
-- all source files and documentation are committed before submission.
