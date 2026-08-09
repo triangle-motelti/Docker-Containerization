@@ -12,7 +12,6 @@ CREATE DATABASE IF NOT EXISTS \`${db_name}\`;
 CREATE USER IF NOT EXISTS \`${db_user}\`@'%' IDENTIFIED BY '${DB_PASS}';
 GRANT ALL PRIVILEGES ON \`${db_name}\`.* TO \`${db_user}\`@'%';
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASS}';
-FLUSH PRIVILEGES;
 EOF
 
 exec mysqld --user=mysql
