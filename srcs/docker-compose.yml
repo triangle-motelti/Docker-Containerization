@@ -50,14 +50,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/login/data/mariadb
+      device: /home/motelti/data/mariadb
       
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/login/data/wordpress
+      device: /home/motelti/data/wordpress
 
 secrets:
   db_password:
