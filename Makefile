@@ -1,7 +1,7 @@
 COMPOSE_FILE = srcs/docker-compose.yml
 ENV_FILE = srcs/.env
 COMPOSE = docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE)
-DATA_DIR = /home/$(USER)/data
+DATA_DIR = /home/motelti/data
 
 .PHONY: all up prepare down clean fclean re
 
@@ -11,8 +11,8 @@ up: prepare
 	$(COMPOSE) up --detach --build
 
 prepare:
-	mkdir -p $(DATA_DIR)/mariadb
-	mkdir -p $(DATA_DIR)/wordpress
+	sudo mkdir -p $(DATA_DIR)/mariadb
+	sudo mkdir -p $(DATA_DIR)/wordpress
 
 down:
 	$(COMPOSE) down
