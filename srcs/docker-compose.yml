@@ -12,6 +12,11 @@ services:
     secrets:
       - db_password
       - db_root_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   wordpress:
     build: ./requirements/wordpress
@@ -26,6 +31,9 @@ services:
     secrets:
       - db_password
       - credentials
+    depends_on:
+      mariadb:
+        condition: service_healthy
 
   nginx:
     build: ./requirements/nginx
