@@ -45,32 +45,6 @@ Add the following line to `/etc/hosts` inside the virtual machine:
 
 When opening the site from another computer, use the virtual machine's reachable IP address instead of `127.0.0.1`.
 
-### 3. Create local credentials
-
-From the project root:
-
-```sh
-mkdir -p secrets
-openssl rand -hex 24 > secrets/db_root_password.txt
-openssl rand -hex 24 > secrets/db_password.txt
-openssl rand -hex 24 > secrets/wp_admin_password.txt
-openssl rand -hex 24 > secrets/wp_user_password.txt
-chmod 600 secrets/*.txt
-```
-
-Do not commit these files to Git.
-
-Confirm that the local configuration and credentials are ignored:
-
-```sh
-git status
-git check-ignore -v srcs/.env
-git check-ignore -v secrets/db_password.txt
-```
-
-## Start the project
-
-From the repository root:
 
 ```sh
 make
@@ -112,7 +86,7 @@ The usernames are part of the local project configuration and are intentionally 
 Stop the containers without deleting persistent data:
 
 ```sh
-make down
+make
 ```
 
 Rebuild and restart the project:
@@ -123,11 +97,6 @@ make re
 
 Perform a complete reset, delete persistent data, and build again:
 
-```sh
-make reset
-```
-
-A complete reset deletes the WordPress website and database. Back up important data before using it.
 
 ## Check that services are running
 
